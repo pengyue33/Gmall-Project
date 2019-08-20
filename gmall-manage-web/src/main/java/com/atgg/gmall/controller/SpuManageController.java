@@ -2,7 +2,9 @@ package com.atgg.gmall.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.atgg.gmall.been.BaseSaleAttr;
+import com.atgg.gmall.been.SpuImage;
 import com.atgg.gmall.been.SpuInfo;
+import com.atgg.gmall.been.SpuSaleAttr;
 import com.atgg.gmall.service.ManageService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,4 +36,15 @@ public class SpuManageController {
        manageService.saveSpuInfo(spuInfo);
        return "OK";
    }
+     //获取Spu图片集合
+   @RequestMapping("spuImageList")
+    public List<SpuImage> spuImageList(SpuImage spuImage){
+         return   manageService.spuImageList(spuImage);
+   }
+    //获取spu的销售属性集合和销售属性值集合
+    //http://localhost:8082/spuSaleAttrList?spuId=60
+     @RequestMapping("spuSaleAttrList")
+    public  List<SpuSaleAttr> spuSaleAttrList(String spuId){
+       return   manageService.spuSaleAttrList(spuId);
+    }
 }

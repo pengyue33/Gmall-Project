@@ -60,7 +60,7 @@ public class ManageController {
      */
     @RequestMapping(value = "attrInfoList")
     @ResponseBody
-
+    //http://localhost:8082/attrInfoList?catalog3Id=61
    public List<BaseAttrInfo> attrInfoList(String catalog3Id ){
        List<BaseAttrInfo> attrList = manageService.getAttrList(catalog3Id);
          return attrList;

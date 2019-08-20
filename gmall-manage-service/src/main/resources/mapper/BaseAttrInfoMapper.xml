@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atgg.gmall.manage.mapper.BaseAttrInfoMapper">
+     <select id="getAttrList" resultMap="baseAttrInfoMap">
+            select bai.id,bai.attr_name,bai.catalog3_id,
+            bav.id val_id,bav.value_name,bav.attr_id
+            FROM base_attr_info bai
+            INNER JOIN base_attr_value  bav
+            on bai.id = bav.attr_id
+            where catalog3_id = #{catalog3Id};
+
+     </select>
+     <resultMap id="baseAttrInfoMap" type="com.atgg.gmall.been.BaseAttrInfo" autoMapping="true">
+              <result property="id" column="id"></result>
+          <collection property="attrValueList" ofType="com.atgg.gmall.been.BaseAttrValue" autoMapping="true">
+              <result property="id" column="val_id" ></result>
+          </collection>
+     </resultMap>
+
+</mapper>
