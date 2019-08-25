@@ -41,4 +41,25 @@ public interface ManageService {
      * @param skuInfo
      */
     void saveSkuInfo(SkuInfo skuInfo);
+
+    /**
+     * 根据id获取SkuIfo信息
+     * @param skuId
+     * @return
+     */
+    SkuInfo getSkuInfoBySkuId(String skuId);
+
+    /**
+     * 获取Spu的销售属性及被选中的sku
+     * @param skuInfo
+     * @return
+     */
+    List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(SkuInfo skuInfo);
+
+    /**
+     * 通过销售属性返回所有匹配的sku集合
+     * @param spuId
+     * @return
+     */
+    List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId);
 }

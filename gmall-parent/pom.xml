@@ -36,9 +36,12 @@
         <httpclient.version>4.5.5</httpclient.version>
         <commons-lang3.version>3.7</commons-lang3.version>
         <mapper-starter.version>1.2.3</mapper-starter.version>
+        <!--操作redis-->
         <jedis.version>2.9.0</jedis.version>
+         <!--操作elasticsearch-->
         <jest.version>5.3.3</jest.version>
         <jna.version>4.5.1</jna.version>
+
         <beanUtils.version>1.9.3</beanUtils.version>
     </properties>
     <parent>
