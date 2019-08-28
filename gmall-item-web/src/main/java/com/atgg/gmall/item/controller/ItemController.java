@@ -6,6 +6,8 @@ import com.atgg.gmall.been.SkuInfo;
 import com.atgg.gmall.been.SkuSaleAttrValue;
 import com.atgg.gmall.been.SpuSaleAttr;
 import com.atgg.gmall.been.SpuSaleAttrValue;
+import com.atgg.gmall.config.LoginRequire;
+import com.atgg.gmall.service.ListService;
 import com.atgg.gmall.service.ManageService;
 
 
@@ -20,8 +22,12 @@ import java.util.Map;
 
 @Controller
 public class ItemController {
-       @Reference
-      private ManageService  manageService;
+        @Reference
+       private ManageService  manageService;
+        @Reference
+       private ListService listService;
+        //自定义注解测试
+     @LoginRequire(autoRedirect = true)
      @RequestMapping("{skuId}.html")
     public String skuInfoPage(@PathVariable String skuId, HttpServletRequest request){
          SkuInfo skuInfo =manageService.getSkuInfoBySkuId(skuId);
@@ -55,6 +61,8 @@ public class ItemController {
        //  {"122|125":"35","122|124":"34","121|123":"33"}
          request.setAttribute("valuesSkuJson",jStr);
 
+            //更新热度评分
+         listService.incrHotScore(skuId);
           return "item";
      }
 

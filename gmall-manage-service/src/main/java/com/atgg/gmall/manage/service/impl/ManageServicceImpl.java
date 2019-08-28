@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import redis.clients.jedis.Jedis;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -417,5 +418,16 @@ public class ManageServicceImpl implements ManageService {
     public List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId) {
 
         return skuSaleAttrValueMapper.getSkuSaleAttrValueListBySpu(spuId);
+    }
+    /**
+     * 通过平台属性值Id查询平台属性集合
+     * @param attrValueIdList
+     * @return
+     */
+    @Override
+    public List<BaseAttrInfo> getAttrList(List<String> attrValueIdList) {
+        String attrValueIds = StringUtils.join(attrValueIdList.toArray(), ",");
+        List<BaseAttrInfo>  baseAttrInfoList=   baseAttrInfoMapper.selectAttrInfoListByIds(attrValueIds);
+         return baseAttrInfoList;
     }
 }

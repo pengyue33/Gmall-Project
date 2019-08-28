@@ -5,12 +5,9 @@ import com.atgg.gmall.been.SkuLsInfo;
 import com.atgg.gmall.been.SkuLsParams;
 import com.atgg.gmall.been.SkuLsResult;
 import com.atgg.gmall.service.ListService;
+import com.atgg.gmall.service.util.RedisUtil;
 import io.searchbox.client.JestClient;
-import io.searchbox.core.DocumentResult;
-
-import io.searchbox.core.Index;
-import io.searchbox.core.Search;
-import io.searchbox.core.SearchResult;
+import io.searchbox.core.*;
 import io.searchbox.core.search.aggregation.TermsAggregation;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -23,6 +20,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import redis.clients.jedis.Jedis;
 
 
 import javax.swing.*;
@@ -35,10 +33,44 @@ public class ListServiceImpl implements ListService {
 
       @Autowired
       JestClient jestClient;
+      @Autowired
+     RedisUtil redisUtil;
+
         //es中index
     public static final String ES_INDEX="gmall";
        //es中的type
     public static final String ES_TYPE="SkuInfo";
+
+    /**
+     * 评分排序方法
+     * @param skuId
+     */
+    @Override
+    public void incrHotScore(String skuId) {
+        Jedis jedis = redisUtil.getJedis();
+        String key ="hotScore";
+         //使用zset数据结构存储
+        Double hotScore = jedis.zincrby(key, 1, skuId);
+         if(hotScore%10==0){
+             updateHotScore(skuId,  Math.round(hotScore));
+         }
+    }
+
+    public void   updateHotScore(String skuId,Long hotScore){
+           //编写dsl语句
+        String dsl = "{\n" +
+                "  \"doc\": {\n" +
+                "    \"hotScore\":"+hotScore+"\n" +
+                "  }\n" +
+                "}";
+         //定义执行动作
+        Update build = new Update.Builder(dsl).index(ES_INDEX).type(ES_TYPE).id(skuId).build();
+        try {
+            DocumentResult execute = jestClient.execute(build);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void saveSkuInfo(SkuLsInfo skuLsInfo) {
@@ -67,7 +99,10 @@ public class ListServiceImpl implements ListService {
         return skuLsResult;
 
     }
-     //封装es查询结果
+
+
+
+    //封装es查询结果
     private  SkuLsResult makeResultForSearch(SearchResult searchResult,SkuLsParams skuLsParams) {
           //封装查询结果
         SkuLsResult skuLsResult = new SkuLsResult();

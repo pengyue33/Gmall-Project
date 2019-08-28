@@ -8,4 +8,6 @@ public interface ListService {
      public void saveSkuInfo(SkuLsInfo skuLsInfo);
 
      public SkuLsResult search(SkuLsParams skuLsParams);
+       //评分排序
+     public void incrHotScore(String skuId);
 }

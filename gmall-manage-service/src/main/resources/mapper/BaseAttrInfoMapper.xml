@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atgg.gmall.manage.mapper.BaseAttrInfoMapper">
-     <select id="getAttrList" resultMap="baseAttrInfoMap">
+    <select id="getAttrList" resultMap="baseAttrInfoMap">
             select bai.id,bai.attr_name,bai.catalog3_id,
             bav.id val_id,bav.value_name,bav.attr_id
             FROM base_attr_info bai
@@ -10,11 +10,19 @@
             where catalog3_id = #{catalog3Id};
 
      </select>
-     <resultMap id="baseAttrInfoMap" type="com.atgg.gmall.been.BaseAttrInfo" autoMapping="true">
-              <result property="id" column="id"></result>
-          <collection property="attrValueList" ofType="com.atgg.gmall.been.BaseAttrValue" autoMapping="true">
-              <result property="id" column="val_id" ></result>
-          </collection>
-     </resultMap>
+    <resultMap id="baseAttrInfoMap" type="com.atgg.gmall.been.BaseAttrInfo" autoMapping="true">
+        <result property="id" column="id"></result>
+        <collection property="attrValueList" ofType="com.atgg.gmall.been.BaseAttrValue" autoMapping="true">
+            <result property="id" column="val_id"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectAttrInfoListByIds" resultMap="baseAttrInfoMap">
+            SELECT ai.id,ai.attr_name,ai.catalog3_id,
+            av.id val_id ,av.attr_id ,av.value_name
+            FROM base_attr_info ai INNER JOIN base_attr_value av
+            ON ai.id=av.attr_id
+            where av.id in(${attrValueIds})
+    </select>
 
 </mapper>
