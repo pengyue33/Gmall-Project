@@ -63,7 +63,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                 request.setAttribute("userId",userId);
                 return  true;
             }else {
-                 //认证失败,跳转到登录页面
+                  //认证失败,跳转到登录页面
                 if(methodAnnotation.autoRedirect()){
                      // 必须登录！ 获取跳转过来的页面，登录完成后，回到之前页面
                     String requestURL = request.getRequestURL().toString();

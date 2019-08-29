@@ -17,7 +17,7 @@ import java.util.Map;
 @Controller
 public class PassportController {
 
-        @Reference
+         @Reference
      private  UserInfoService userInfoService;
          @Value("${token.key}")
       public String  key;

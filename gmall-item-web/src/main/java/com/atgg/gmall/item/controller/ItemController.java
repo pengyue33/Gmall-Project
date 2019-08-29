@@ -27,7 +27,7 @@ public class ItemController {
         @Reference
        private ListService listService;
         //自定义注解测试
-     @LoginRequire(autoRedirect = true)
+     //@LoginRequire(autoRedirect = true)
      @RequestMapping("{skuId}.html")
     public String skuInfoPage(@PathVariable String skuId, HttpServletRequest request){
          SkuInfo skuInfo =manageService.getSkuInfoBySkuId(skuId);
