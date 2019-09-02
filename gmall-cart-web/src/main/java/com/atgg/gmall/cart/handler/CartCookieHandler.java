@@ -94,4 +94,23 @@ public class CartCookieHandler {
     public void delCartList(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil.deleteCookie(request,response,cookieCartName);
     }
+
+    /**
+     * 修改购物车中购物项的选中状态
+     * @param request
+     * @param response
+     * @param isChecked
+     * @param skuId
+     */
+    public void checkCart(HttpServletRequest request, HttpServletResponse response, String isChecked, String skuId) {
+               //获取所有的购物项
+            List<CartInfo> cartList = getCartList(request);
+            for (CartInfo cartInfo : cartList) {
+                if(cartInfo.getSkuId().equals(skuId)){
+                    cartInfo.setIsChecked(isChecked);
+                }
+        }
+            //更新到cookie
+           CookieUtil.setCookie(request,response,cookieCartName,JSON.toJSONString(cartList),COOKIE_CART_MAXAGE,true);
+    }
 }

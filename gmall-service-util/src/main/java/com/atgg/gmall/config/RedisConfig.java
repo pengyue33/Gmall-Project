@@ -14,7 +14,7 @@ public class RedisConfig {
     @Value("${spring.redis.timeOut:0}")
     private int timeOut;
 
-       @Bean
+        @Bean
      public RedisUtil getRedisUtil(){
            if("disabled".equals(host)){
                return null;
