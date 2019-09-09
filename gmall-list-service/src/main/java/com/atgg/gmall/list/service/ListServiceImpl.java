@@ -34,7 +34,7 @@ public class ListServiceImpl implements ListService {
       @Autowired
       JestClient jestClient;
       @Autowired
-     RedisUtil redisUtil;
+       RedisUtil redisUtil;
 
         //es中index
     public static final String ES_INDEX="gmall";

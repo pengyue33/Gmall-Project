@@ -1,6 +1,7 @@
 package com.atgg.gmall.order.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.atgg.gmall.been.CartInfo;
 import com.atgg.gmall.been.OrderDetail;
 import com.atgg.gmall.been.OrderInfo;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class OrderController {
@@ -106,7 +108,23 @@ public class OrderController {
         //重定向到 支付页面
          return  "redirect://payment.gmall.com/index?orderId="+orderId;
     }
+     //拆单
+    //http://order.gmall.com/orderSplit
+    @RequestMapping("orderSplit")
+    @ResponseBody
+  public String orderSplit(HttpServletRequest request){
+        String orderId = request.getParameter("orderId");
+        String wareSkuMap = request.getParameter("wareSkuMap");
+            //拆单完成返回子订单集合
+      List<OrderInfo> orderInfoList= orderService.orderSplit(orderId,wareSkuMap);
+      ArrayList<Map>  wareMapList = new ArrayList<>();
+        for (OrderInfo orderInfo : orderInfoList) {
+           Map map =  orderService.initWareOrder(orderInfo);
+            wareMapList.add(map);
+        }
 
+         return JSON.toJSONString(wareMapList);
+  }
 
 
 }

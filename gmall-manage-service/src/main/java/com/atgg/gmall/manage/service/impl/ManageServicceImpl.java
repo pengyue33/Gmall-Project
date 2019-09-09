@@ -257,7 +257,7 @@ public class ManageServicceImpl implements ManageService {
     public SkuInfo getSkuInfoBySkuId(String skuId) {
         return getSkuInfoByRedissonLock(skuId);
     }
-         //通过redisson框架解分布锁问题
+          //通过redisson框架解分布锁问题
     private SkuInfo getSkuInfoByRedissonLock(String skuId) {
         SkuInfo skuInfo = null;
         Jedis jedis =null;
